@@ -1,46 +1,48 @@
-import { ProductList } from "./_components/product-list";
-import { ThemeToggle } from "./_components/theme-toggle";
+import Link from "next/link";
+import { products } from "@/data/products";
 
-export default async function Home({
-  searchParams,
-}: {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-}) {
-  const params = await searchParams;
+export default function Home() {
+  const selectedCategories = ['SaaS', 'E-Commerce', 'Marketing', 'Data'];
+
   return (
-    <main className="min-h-screen bg-background">
-      <div className="mx-auto flex max-w-6xl flex-col gap-10 px-6 py-12 sm:px-8 lg:px-12 lg:py-14">
-        <header className="flex flex-col gap-6 rounded-[var(--radius-lg)] bg-surface p-6 shadow-[var(--shadow-soft)] ring-1 ring-border/60 sm:flex-row sm:items-center sm:justify-between sm:p-8">
-          <div className="flex flex-col gap-3">
-            <div className="inline-flex w-fit items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary ring-1 ring-inset ring-primary/25">
-              Marketplace Bergambar
-            </div>
-            <div className="flex flex-col gap-2">
-              <h1 className="text-3xl font-semibold leading-tight text-foreground sm:text-4xl">
-                Produk siap scale dengan visual.
-              </h1>
-              <p className="max-w-3xl text-sm leading-relaxed text-muted sm:text-base">
-                Daftar produk digital dengan gaya clean code, server component untuk performa, serta tema terpusat
-                (primary, secondary, accent) yang mendukung light dan dark mode. Detail produk muncul sebagai modal melalui route intercept.
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-2 text-xs font-semibold text-muted">
-              <span className="inline-flex items-center gap-2 rounded-full bg-card px-3 py-1 ring-1 ring-inset ring-border/70">
-                <span className="h-2 w-2 rounded-full bg-primary" aria-hidden /> Server Components
-              </span>
-              <span className="inline-flex items-center gap-2 rounded-full bg-card px-3 py-1 ring-1 ring-inset ring-border/70">
-                <span className="h-2 w-2 rounded-full bg-secondary" aria-hidden /> Theming terpusat
-              </span>
-              <span className="inline-flex items-center gap-2 rounded-full bg-card px-3 py-1 ring-1 ring-inset ring-border/70">
-                <span className="h-2 w-2 rounded-full bg-accent" aria-hidden /> Intercepted modal detail
-              </span>
-            </div>
-          </div>
-
-          <ThemeToggle />
+    <main className="h-screen bg-background flex flex-col">
+      <div className="flex-1 flex flex-col justify-center mx-auto max-w-6xl px-6 py-8 sm:px-8 lg:px-12">
+        <header className="mb-8 text-center">
+          <h1 className="text-4xl font-bold text-foreground mb-4">
+            Kategori Produk
+          </h1>
+          <p className="text-lg text-muted">
+            Temukan produk digital terbaik untuk bisnis Anda
+          </p>
         </header>
 
-        <ProductList searchParams={params} />
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-[120px] flex-1">
+          {selectedCategories.map((category, index) => {
+            let gridClass = "";
+            if (index === 0) gridClass = "md:col-span-2 lg:col-span-2 lg:row-span-2";
+            else if (index === 1) gridClass = "md:col-span-1 lg:col-span-1 lg:row-span-1";
+            else if (index === 2) gridClass = "md:col-span-1 lg:col-span-1 lg:row-span-1";
+            else gridClass = "md:col-span-2 lg:col-span-2 lg:row-span-1";
+
+            return (
+              <Link
+                key={category}
+                href={`/products?category=${encodeURIComponent(category)}`}
+                className={`group relative overflow-hidden rounded-lg bg-surface p-4 shadow-lg ring-1 ring-border/60 transition-all hover:shadow-xl hover:ring-primary/50 ${gridClass} flex flex-col justify-center`}
+              >
+                <div className="flex flex-col gap-2">
+                  <h2 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
+                    {category}
+                  </h2>
+                  <p className="text-xs text-muted">
+                    Jelajahi produk dalam kategori {category}
+                  </p>
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </Link>
+            );
+          })}
+        </div>
       </div>
     </main>
   );
