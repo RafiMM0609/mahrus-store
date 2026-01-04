@@ -35,16 +35,17 @@ export function ModalShell({ children, entityId, title }: ModalShellProps) {
 
   return (
     <div
-      className="fixed inset-0 z-40 flex items-center justify-center bg-black/50 px-4 py-6 backdrop-blur-sm"
+      className="fixed inset-0 z-40 overflow-y-auto bg-black/50 backdrop-blur-sm"
       onClick={close}
       role="presentation"
     >
-      <div
-        className="relative w-full max-w-3xl rounded-[var(--radius-lg)] bg-surface p-6 shadow-[var(--shadow-soft)] ring-1 ring-border/70"
-        role="dialog"
-        aria-modal="true"
-        onClick={(event) => event.stopPropagation()}
-      >
+      <div className="flex min-h-full items-center justify-center px-4 py-6">
+        <div
+          className="relative w-full max-w-3xl max-h-[calc(100vh-3rem)] overflow-y-auto rounded-[var(--radius-lg)] bg-surface p-6 shadow-[var(--shadow-soft)] ring-1 ring-border/70"
+          role="dialog"
+          aria-modal="true"
+          onClick={(event) => event.stopPropagation()}
+        >
         <button
           type="button"
           aria-label="Tutup"
@@ -54,6 +55,7 @@ export function ModalShell({ children, entityId, title }: ModalShellProps) {
           X
         </button>
         {children}
+        </div>
       </div>
     </div>
   );

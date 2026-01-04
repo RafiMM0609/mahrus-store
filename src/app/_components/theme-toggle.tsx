@@ -13,7 +13,20 @@ function resolveInitialTheme(): ThemeMode {
 }
 
 export function ThemeToggle() {
-  const [mode, setMode] = useState<ThemeMode>(() => resolveInitialTheme());
+  const [mode, setMode] = useState<ThemeMode>("light"); // Start with light, will be updated after mount
+
+  useEffect(() => {
+    // Get the actual theme after component mounts
+    const currentTheme = document.documentElement.dataset.theme as ThemeMode;
+    if (currentTheme === "light" || currentTheme === "dark") {
+      setMode(currentTheme);
+    } else {
+      // Fallback if no theme is set yet
+      const resolved = resolveInitialTheme();
+      setMode(resolved);
+      document.documentElement.dataset.theme = resolved;
+    }
+  }, []);
 
   useEffect(() => {
     document.documentElement.dataset.theme = mode;

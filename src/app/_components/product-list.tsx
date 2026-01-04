@@ -1,7 +1,19 @@
+import Link from "next/link";
 import { products } from "@/data/products";
 import { ProductCard } from "./product-card";
+import { FilterPills } from "./filter-pills";
 
-export async function ProductList() {
+export async function ProductList({
+  searchParams,
+}: {
+  searchParams?: { [key: string]: string | string[] | undefined };
+}) {
+  const category = searchParams?.category as string;
+  const filteredProducts = category
+    ? products.filter((product) => product.category === category)
+    : products;
+  const categories = [...new Set(products.map((product) => product.category))];
+
   return (
     <section className="flex flex-col gap-6">
       <header className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
@@ -11,12 +23,14 @@ export async function ProductList() {
         </div>
         <span className="inline-flex items-center gap-2 self-start rounded-full bg-surface px-3 py-1 text-xs font-semibold text-muted ring-1 ring-inset ring-border/70">
           <span className="h-2.5 w-2.5 rounded-full bg-secondary" aria-hidden />
-          {products.length} produk
+          {filteredProducts.length} produk
         </span>
       </header>
 
+      <FilterPills categories={categories} currentCategory={category} />
+
       <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-        {products.map((product) => (
+        {filteredProducts.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
       </div>

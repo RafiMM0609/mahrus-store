@@ -26,11 +26,13 @@ export default function RootLayout({
   modal: React.ReactNode;
 }>) {
   return (
-    <html lang="id" data-theme="light" suppressHydrationWarning>
+    <html lang="id">
+      <head>
+        <ThemeScript />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} bg-background text-foreground antialiased`}
       >
-        <ThemeScript />
         {children}
         {modal}
       </body>

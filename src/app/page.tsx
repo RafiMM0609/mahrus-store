@@ -1,7 +1,12 @@
 import { ProductList } from "./_components/product-list";
 import { ThemeToggle } from "./_components/theme-toggle";
 
-export default function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const params = await searchParams;
   return (
     <main className="min-h-screen bg-background">
       <div className="mx-auto flex max-w-6xl flex-col gap-10 px-6 py-12 sm:px-8 lg:px-12 lg:py-14">
@@ -35,7 +40,7 @@ export default function Home() {
           <ThemeToggle />
         </header>
 
-        <ProductList />
+        <ProductList searchParams={params} />
       </div>
     </main>
   );

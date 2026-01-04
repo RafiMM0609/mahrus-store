@@ -1,14 +1,24 @@
-const scriptContent = `(() => {
+"use client";
+
+import { useEffect } from "react";
+
+function resolveInitialTheme(): "light" | "dark" {
+  if (typeof window === "undefined") return "light";
   try {
-    const stored = localStorage.getItem("theme-preference");
+    const stored = window.localStorage.getItem("theme-preference");
+    if (stored === "light" || stored === "dark") return stored;
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const mode = stored === "light" || stored === "dark" ? stored : prefersDark ? "dark" : "light";
-    document.documentElement.dataset.theme = mode;
-  } catch (error) {
-    document.documentElement.dataset.theme = "light";
+    return prefersDark ? "dark" : "light";
+  } catch {
+    return "light";
   }
-})();`;
+}
 
 export function ThemeScript() {
-  return <script dangerouslySetInnerHTML={{ __html: scriptContent }} />;
+  useEffect(() => {
+    const mode = resolveInitialTheme();
+    document.documentElement.dataset.theme = mode;
+  }, []);
+
+  return null;
 }
