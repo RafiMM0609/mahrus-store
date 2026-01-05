@@ -18,7 +18,7 @@ function FilterPills({
   return (
     <div className="flex flex-wrap gap-2">
       <button
-        onClick={() => handleFilter("?")}
+        onClick={() => handleFilter("/products")}
         className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold ring-1 ring-inset transition-colors cursor-pointer ${
           !currentCategory
             ? "bg-primary text-primary-foreground ring-primary/25"
@@ -31,7 +31,7 @@ function FilterPills({
       {categories.map((cat) => (
         <button
           key={cat}
-          onClick={() => handleFilter(`?category=${encodeURIComponent(cat)}`)}
+          onClick={() => handleFilter(`/products?category=${encodeURIComponent(cat)}`)}
           className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold ring-1 ring-inset transition-colors cursor-pointer ${
             currentCategory === cat
               ? "bg-primary text-primary-foreground ring-primary/25"
