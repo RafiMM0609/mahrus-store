@@ -5,10 +5,18 @@ export function useProductManagement() {
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [isAdding, setIsAdding] = useState(false);
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+  const [notification, setNotification] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
   const handleDelete = (id: string) => {
-    if (confirm("Are you sure you want to delete this product?")) {
-      setProducts(products.filter(p => p.id !== id));
+    setConfirmDeleteId(id);
+  };
+
+  const handleConfirmDelete = () => {
+    if (confirmDeleteId) {
+      setProducts(products.filter(p => p.id !== confirmDeleteId));
+      setNotification({ type: 'success', message: 'Product deleted successfully!' });
+      setConfirmDeleteId(null);
     }
   };
 
@@ -28,6 +36,7 @@ export function useProductManagement() {
     } else {
       setProducts([...products, { ...product, id: `prd-${Date.now()}` }]);
     }
+    setNotification({ type: 'success', message: 'Product saved successfully!' });
     setEditingProduct(null);
     setIsAdding(false);
   };
@@ -37,14 +46,23 @@ export function useProductManagement() {
     setIsAdding(false);
   };
 
+  const handleCloseNotification = () => {
+    setNotification(null);
+  };
+
   return {
     products,
     editingProduct,
     isAdding,
+    confirmDeleteId,
+    setConfirmDeleteId,
+    notification,
     handleDelete,
+    handleConfirmDelete,
     handleEdit,
     handleAdd,
     handleSave,
     handleCancel,
+    handleCloseNotification,
   };
 }
